@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Product Prices</title>
+	<style>
+		table {
+			border-collapse: collapse;
+			width: 100%;
+			margin: 20px 0;
+			font-size: 1em;
+			font-family: sans-serif;
+			min-width: 400px;
+			box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+		}
+		
+		th {
+			background-color: #009879;
+			color: #ffffff;
+			text-align: left;
+			font-weight: bold;
+		}
+		
+		th, td {
+			padding: 12px 15px;
+			border: 1px solid #dddddd;
+		}
+		
+		tr:nth-child(even) {
+			background-color: #f3f3f3;
+		}
+		
+		tr:hover {
+			background-color: #e0e0e0;
+		}
+	</style>
+</head>
+<body>
+	<table>
+		<thead>
+			<tr>
+				<th>Product Name</th>
+				<th>Price</th>
+			</tr>
+		</thead>
+		<tbody>
+            {% for result in results %}
+            <tr>
+                <td>{{result["Product"]}}</td>
+				<td>{{result["Price"]}}</td>
+            </tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</body>
+</html>
