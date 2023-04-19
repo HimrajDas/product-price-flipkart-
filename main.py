@@ -3,6 +3,7 @@ from flask import Flask, request, render_template
 from flask_cors import cross_origin
 from urllib.request import urlopen
 import logging
+import pymongo
 
 logging.basicConfig(filename="scrapper.log", level=logging.INFO)
 
@@ -28,7 +29,6 @@ def contents():
             products = soup.find_all("div", {"class": "_4rR01T"})
             prices = soup.find_all("div", {"class": "_30jeq3 _1_WHN1"})
             results = []
-
             for i in range(len(products)):
                 product_name = products[i].text.strip()
                 product_price = prices[i].text.strip()
@@ -40,12 +40,21 @@ def contents():
 
                 results.append(my_dict)
 
-            return render_template("result.html", results=results[0:(len(results) - 1)])
+            try:
+                client = pymongo.MongoClient("mongodb+srv://Himraj:My$MongodB$@cluster0.prceeb8.mongodb.net/test")
+                db = client["flipkart_price_scrapper"]
+                data_collection = db["product_prices"]
+                data_collection.insert_many(results)
+            except Exception as e:
+                logging.info(e)
 
+
+            return render_template("result.html", results=results[0:(len(results) - 1)])
 
         except Exception as e:
             logging.info(e)
-
+    else:
+        return render_template("index.html")
 
 
 if __name__ == "__main__":
